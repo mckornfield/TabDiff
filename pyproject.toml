@@ -1,0 +1,113 @@
+[project]
+name = "tabdiff"
+version = "0.1.0" # Start with a development version
+description = "A Mixed-type Diffusion Model for Tabular Data Generation (ICLR 2025)"
+readme = "README.md"
+requires-python = ">=3.10" # Based on your conda envs
+license = { file = "LICENSE" }
+authors = [
+    { name = "Minkai Xu", email = "minkai@stanford.edu" },
+    { name = "Juntong Shi", email = "shisteve@usc.edu" },
+]
+keywords = [
+    "diffusion models",
+    "tabular data generation",
+    "machine learning",
+    "deep learning",
+    "pytorch",
+    "synthetic data",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# Standard dependencies (equivalent to your tabdiff.yaml pip section)
+dependencies = [
+    "torch",
+    "torchvision",
+    "torchaudio",
+    "numpy<2",
+    "pandas",
+    "scikit-learn",
+    "scipy",
+    "icecream",
+    "xlrd",
+    "tomli-w",
+    "tomli",
+    "category_encoders",
+    "imbalanced-learn",
+    "kaggle",
+    "transformers",
+    "datasets",
+    "peft",
+    "ml_collections",
+    "sdmetrics",
+    "prdc",
+    "rdt",
+    "openpyxl",
+    "xgboost",
+    "wandb",
+    "kaleido",
+]
+
+[project.urls]
+Homepage = "https://github.com/MinkaiXu/TabDiff"
+Documentation = "https://github.com/MinkaiXu/TabDiff/blob/main/README.md" # Or create separate docs
+Repository = "https://github.com/MinkaiXu/TabDiff"
+"Bug Tracker" = "https://github.com/MinkaiXu/TabDiff/issues"
+"OpenReview Paper" = "https://openreview.net/forum?id=swvURjrt8z"
+"arXiv Paper" = "https://arxiv.org/abs/2410.20626"
+
+[build-system]
+requires = ["setuptools>=61.0"] # Standard build backend for most Python projects
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+# This tells setuptools where to find your Python packages.
+# 'where = ["."]' means it looks in the current directory.
+# 'include = ["src*", "tabdiff*"]' means it will include 'src' and 'tabdiff' as packages.
+# This assumes 'src' and 'tabdiff' directories contain __init__.py files.
+where = ["."]
+include = ["src*", "tabdiff*"] # Explicitly include top-level 'tabdiff' and 'src'
+
+[tool.setuptools.package-dir]
+# This tells setuptools that 'src' is a package directory and 'tabdiff' is another.
+# If 'src' and 'tabdiff' were subdirectories of a 'python_packages' directory,
+# you'd use something like "tabdiff" = "python_packages/tabdiff".
+# Given your structure, they are at the root, so this helps.
+"" = "." # Default mapping
+
+# Optional: Add development dependencies or specific environment dependencies
+[options.extras_require]
+# For the Synthcity environment (for eval_quality.py)
+synthcity_eval = [
+    "synthcity",
+    "category_encoders", # Duplicated, but harmless if in both envs
+]
+# For development/linting/testing (if you add those)
+dev = [
+    "pytest",
+    "flake8",
+    "black",
+    "isort",
+    "mypy",
+]
+
+# For a project of this nature, you might want to specify `uv`'s settings
+[tool.uv]
+required-python-version = ">=3.11"
+
+[tool.uv.scripts]
+"download-dataset" = "python download_dataset.py"
+"process-dataset" = "python process_dataset.py"
+"train" = "python main.py --mode train" # Example of more complex script
+"test" = "python main.py --mode test"
+"eval-quality" = "python eval/eval_quality.py"
+"eval-impute" = "python eval_impute.py"
+"tabdiff-main" = "python tabdiff/main.py" # If you want to distinguish main from tabdiff/main
